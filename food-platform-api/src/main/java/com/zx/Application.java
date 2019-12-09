@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @ClassName: InitApplication
- * @Description: TODO
+ * @Description: 启动类
  * @Author: zhengxin
  * @Date: 2019/12/6 11:44
  * @Version: 1.0
