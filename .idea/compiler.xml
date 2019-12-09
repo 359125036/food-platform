@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="food-platform-api" />
+        <module name="food-platform-common" />
+        <module name="food-platform-mapper" />
+        <module name="food-platform-pojo" />
+        <module name="food-platform-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="food-platform-common" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

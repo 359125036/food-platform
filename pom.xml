@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.zx</groupId>
+    <artifactId>food-platform</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>food-platform-common</module>
+        <module>food-platform-pojo</module>
+        <module>food-platform-mapper</module>
+        <module>food-platform-service</module>
+        <module>food-platform-api</module>
+    </modules>
+
+    <!--
+       1.聚合项目里可以分为顶级项目（顶级工程、父工程）与子工程，这两者的关系其实就是父子继承
+       的关系子工程在maven里称之为模块（即module），模块之间是平级，是可以相互依赖的。
+       2.子模块可以使用顶级工程里所以的资源（即依赖），子模块之间如果要使用资源，必须构建依赖（构建关系）。
+       3.一个顶级工程是可以由多个不同的子工程共同组合而成。
+   -->
+
+
+    <!-- maven 聚合方式有jar，war，pom-->
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>RELEASE</version>
+        <relativePath />
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+
+        <!--解析不同的文件类型-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+</project>
