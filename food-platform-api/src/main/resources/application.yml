@@ -50,5 +50,5 @@ mybatis:
   # 通用 Mapper 配置
   mapper:
     mappers: com.zx.my.mapper.MyMapper
-    not-empty: false
+    not-empty: false #在进行数据库操作时，判断表达式username!=null 是否自动填充username！=""
     identity: MYSQL
