@@ -13,8 +13,5 @@
         <module name="food-platform-service" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="food-platform-common" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,16 +1,20 @@
 package com.zx.service.impl;
 
-import com.zx.mapper.StuMapper;
+import com.zx.enums.SexEnum;
 import com.zx.mapper.UsersMapper;
-import com.zx.pojo.Stu;
 import com.zx.pojo.Users;
-import com.zx.service.StuService;
+import com.zx.pojo.bo.UserBO;
 import com.zx.service.UserService;
+import com.zx.utils.DateUtil;
+import com.zx.utils.MD5Utils;
+import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+
+import java.util.Date;
 
 /**
  * @ClassName: StuServiceImpl
@@ -23,7 +27,20 @@ import tk.mybatis.mapper.entity.Example;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UsersMapper usersMapper;
+    @Autowired
+    private Sid sid;
+    //默认头像地址
+    private static final String USER_FACE = "http://122.152.205.72:88/group1/M00/00/05/CpoxxFw_8_qAIlFXAAAcIhVPdSg994.png";
 
+    /**
+     * @Method queryUserNameIsExist
+     * @Author zhengxin
+     * @Version  1.0
+     * @Description 判断用户名是否存在
+     * @Return boolean
+     * @Exception
+     * @Date 2019/12/11 11:31
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public boolean queryUserNameIsExist(String userName) {
@@ -34,7 +51,33 @@ public class UserServiceImpl implements UserService {
         Users result=usersMapper.selectOneByExample(userExample);
         return result==null ? false : true;
     }
+    /**
+     * @Method createUser
+     * @Author zhengxin
+     * @Version  1.0
+     * @Description 创建用户
+     * @Return com.zx.pojo.Users
+     * @Exception 
+     * @Date 2019/12/12 13:59
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public Users createUser(UserBO userBO) {
+        Users user=new Users();
+        //设置全局唯一的id（防止分布式id重复）
+        user.setId(sid.nextShort());
+        user.setUsername(userBO.getUserName());
+        try {
+            user.setPassword(MD5Utils.getMD5Str(userBO.getPassword()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        user.setBirthday(DateUtil.stringToDate("1900-01-01"));
+        user.setFace(USER_FACE);
+        user.setSex(SexEnum.secret.type);
+        user.setCreatedTime(new Date());
+        user.setUpdatedTime(new Date());
 
-
-
+        return user;
+    }
 }
