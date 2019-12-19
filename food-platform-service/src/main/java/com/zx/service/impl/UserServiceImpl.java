@@ -7,6 +7,7 @@ import com.zx.pojo.bo.UserBO;
 import com.zx.service.UserService;
 import com.zx.utils.DateUtil;
 import com.zx.utils.MD5Utils;
+import org.apache.commons.lang3.StringUtils;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
         Users user=new Users();
         //设置全局唯一的id（防止分布式id重复）
         user.setId(sid.nextShort());
-        user.setUsername(userBO.getUserName());
+        user.setUsername(userBO.getUsername());
         try {
             user.setPassword(MD5Utils.getMD5Str(userBO.getPassword()));
         } catch (Exception e) {
@@ -77,7 +78,27 @@ public class UserServiceImpl implements UserService {
         user.setSex(SexEnum.secret.type);
         user.setCreatedTime(new Date());
         user.setUpdatedTime(new Date());
+        usersMapper.insert(user);
+        return user;
+    }
 
+    /**
+     * @Method queryUserForLogin
+     * @Author zhengxin
+     * @Version  1.0
+     * @Description 检索用户名和密码是否匹配，用于登录
+     * @Return com.zx.pojo.Users
+     * @Exception 
+     * @Date 2019/12/19 10:17
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public Users queryUserForLogin(String username, String password) {
+        Example example=new Example(Users.class);
+        Example.Criteria userCriteria=example.createCriteria();
+        userCriteria.andEqualTo("username",username);
+        userCriteria.andEqualTo("password",password);
+        Users user= usersMapper.selectOneByExample(example);
         return user;
     }
 }

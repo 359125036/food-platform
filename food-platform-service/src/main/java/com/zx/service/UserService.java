@@ -27,4 +27,15 @@ public interface UserService {
      */
     public Users createUser(UserBO userBO);
 
+    /**
+     * @Method queryUserForLogin
+     * @Author zhengxin
+     * @Version  1.0
+     * @Description 检索用户名和密码是否匹配，用于登录
+     * @Return com.zx.pojo.Users
+     * @Exception
+     * @Date 2019/12/19 10:16
+     */
+    public Users queryUserForLogin(String userName,String password);
+
 }

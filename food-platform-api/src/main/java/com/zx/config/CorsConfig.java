@@ -1,5 +1,6 @@
 package com.zx.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -16,6 +17,7 @@ import org.springframework.web.filter.CorsFilter;
 public class CorsConfig {
     public CorsConfig() {
     }
+    @Bean
     public CorsFilter corsFilter() {
         //1.添加cors（跨域）配置
         CorsConfiguration corsConfiguration = new CorsConfiguration();

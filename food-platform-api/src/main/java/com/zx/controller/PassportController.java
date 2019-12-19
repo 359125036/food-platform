@@ -1,8 +1,10 @@
 package com.zx.controller;
 
+import com.zx.pojo.Users;
 import com.zx.pojo.bo.UserBO;
 import com.zx.service.UserService;
 import com.zx.utils.JSONResult;
+import com.zx.utils.MD5Utils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -48,7 +50,7 @@ public class PassportController {
     }
 
     /**
-     * @Method register
+     * @Method regist
      * @Author zhengxin
      * @Version  1.0
      * @Description 用户注册
@@ -57,9 +59,9 @@ public class PassportController {
      * @Date 2019/12/13 14:14
      */
     @ApiOperation(value = "用户注册",notes = "用户注册",httpMethod = "POST")
-    @PostMapping("/register")
-    public JSONResult register(@RequestBody UserBO userBO){
-        String userName=userBO.getUserName();
+    @PostMapping("/regist")
+    public JSONResult regist(@RequestBody UserBO userBO){
+        String userName=userBO.getUsername();
         String password=userBO.getPassword();
         String confirmPwd=userBO.getConfirmPassword();
        //1.用户名密码是否为空
@@ -82,5 +84,28 @@ public class PassportController {
         return JSONResult.ok();
     }
 
+    /**
+     * @Method login
+     * @Author zhengxin
+     * @Version  1.0
+     * @Description 用户登录
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2019/12/19 10:50
+     */
+    @ApiOperation(value = "用户登录",notes = "登录",httpMethod = "POST")
+    @PostMapping("/login")
+    public JSONResult login(@RequestBody UserBO userBO) throws Exception {
+        String userName=userBO.getUsername();
+        String password=userBO.getPassword();
+        //1.用户名密码是否为空
+        if(StringUtils.isBlank(userName)|| StringUtils.isBlank(password))
+            return JSONResult.errorMsg("用户名和密码不能为空");
+        // 1. 实现登录
+        Users user=userService.queryUserForLogin(userName, MD5Utils.getMD5Str(password));
+        if(user==null)
+            return JSONResult.errorMsg("用户名或密码不正确");
+        return JSONResult.ok(user);
+    }
 
 }
