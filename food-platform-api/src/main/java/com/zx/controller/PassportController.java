@@ -3,13 +3,18 @@ package com.zx.controller;
 import com.zx.pojo.Users;
 import com.zx.pojo.bo.UserBO;
 import com.zx.service.UserService;
+import com.zx.utils.CookieUtils;
 import com.zx.utils.JSONResult;
+import com.zx.utils.JsonUtils;
 import com.zx.utils.MD5Utils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @ClassName: PassportController
@@ -60,7 +65,8 @@ public class PassportController {
      */
     @ApiOperation(value = "用户注册",notes = "用户注册",httpMethod = "POST")
     @PostMapping("/regist")
-    public JSONResult regist(@RequestBody UserBO userBO){
+    public JSONResult regist(@RequestBody UserBO userBO, HttpServletRequest request,
+                             HttpServletResponse response){
         String userName=userBO.getUsername();
         String password=userBO.getPassword();
         String confirmPwd=userBO.getConfirmPassword();
@@ -80,7 +86,11 @@ public class PassportController {
         if(!password.equals(confirmPwd))
             return JSONResult.errorMsg("二次密码不一致");
         //5.创建用户
-        userService.createUser(userBO);
+        Users user=userService.createUser(userBO);
+        //6.将用户隐私信息设置为null
+        user=setNullProperty(user);
+        //7.将用户信息添加到cookie中
+        CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(user),true);
         return JSONResult.ok();
     }
 
@@ -93,19 +103,43 @@ public class PassportController {
      * @Exception
      * @Date 2019/12/19 10:50
      */
-    @ApiOperation(value = "用户登录",notes = "登录",httpMethod = "POST")
+    @ApiOperation(value = "用户登录",notes = "用户登录",httpMethod = "POST")
     @PostMapping("/login")
-    public JSONResult login(@RequestBody UserBO userBO) throws Exception {
+    public JSONResult login(@RequestBody UserBO userBO, HttpServletRequest request,
+                            HttpServletResponse response) throws Exception {
         String userName=userBO.getUsername();
         String password=userBO.getPassword();
         //1.用户名密码是否为空
         if(StringUtils.isBlank(userName)|| StringUtils.isBlank(password))
             return JSONResult.errorMsg("用户名和密码不能为空");
-        // 1. 实现登录
+        // 2.实现登录
         Users user=userService.queryUserForLogin(userName, MD5Utils.getMD5Str(password));
         if(user==null)
             return JSONResult.errorMsg("用户名或密码不正确");
+        //3.将用户隐私信息设置为null
+        user=setNullProperty(user);
+        //4.将用户信息添加到cookie中
+        CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(user),true);
         return JSONResult.ok(user);
+    }
+
+    /**
+     * @Method setNullProperty
+     * @Author zhengxin
+     * @Version  1.0
+     * @Description 将用户隐私信息设置为null
+     * @Return com.zx.pojo.Users
+     * @Exception
+     * @Date 2019/12/19 16:46
+     */
+    private Users setNullProperty(Users user){
+        user.setPassword(null);
+        user.setMobile(null);
+        user.setEmail(null);
+        user.setCreatedTime(null);
+        user.setUpdatedTime(null);
+        user.setBirthday(null);
+        return user;
     }
 
 }
