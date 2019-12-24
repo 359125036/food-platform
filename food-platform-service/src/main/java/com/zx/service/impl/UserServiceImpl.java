@@ -7,7 +7,6 @@ import com.zx.pojo.bo.UserBO;
 import com.zx.service.UserService;
 import com.zx.utils.DateUtil;
 import com.zx.utils.MD5Utils;
-import org.apache.commons.lang3.StringUtils;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
