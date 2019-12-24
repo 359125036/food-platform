@@ -31,7 +31,7 @@ public class PassportController {
     private UserService userService;
 
     /**
-     * @Method userNameIsExist
+     * @Method usernameIsExist
      * @Author zhengxin
      * @Version  1.0
      * @Description 验证用户名是否存在
@@ -40,13 +40,13 @@ public class PassportController {
      * @Date 2019/12/11 14:04
      */
     @ApiOperation(value = "用户名是否存在",notes = "用户名是否存在",httpMethod = "GET")
-    @GetMapping("/userNameIsExist")
-    public JSONResult userNameIsExist(@RequestParam String userName){
+    @GetMapping("/usernameIsExist")
+    public JSONResult usernameIsExist(@RequestParam String username){
         //1.判断用户名为空
-        if(StringUtils.isBlank(userName))
+        if(StringUtils.isBlank(username))
             return JSONResult.errorMsg("用户名不能为空");
         //2.查找用户名是否存在
-        boolean isExist=userService.queryUserNameIsExist(userName);
+        boolean isExist=userService.queryUserNameIsExist(username);
 
         if(isExist)
             return JSONResult.errorMsg("用户名已存在");
@@ -67,16 +67,16 @@ public class PassportController {
     @PostMapping("/regist")
     public JSONResult regist(@RequestBody UserBO userBO, HttpServletRequest request,
                              HttpServletResponse response){
-        String userName=userBO.getUsername();
+        String username=userBO.getUsername();
         String password=userBO.getPassword();
         String confirmPwd=userBO.getConfirmPassword();
        //1.用户名密码是否为空
-        if(StringUtils.isBlank(userName)||
+        if(StringUtils.isBlank(username)||
                 StringUtils.isBlank(password)||
                     StringUtils.isBlank(confirmPwd))
             return JSONResult.errorMsg("用户名和密码不能为空");
         //2.用户名是否存在
-        boolean isExist=userService.queryUserNameIsExist(userName);
+        boolean isExist=userService.queryUserNameIsExist(username);
         if(isExist)
             return JSONResult.errorMsg("用户名已存在");
         //3.密码长度是否大于6
@@ -107,13 +107,13 @@ public class PassportController {
     @PostMapping("/login")
     public JSONResult login(@RequestBody UserBO userBO, HttpServletRequest request,
                             HttpServletResponse response) throws Exception {
-        String userName=userBO.getUsername();
+        String username=userBO.getUsername();
         String password=userBO.getPassword();
         //1.用户名密码是否为空
-        if(StringUtils.isBlank(userName)|| StringUtils.isBlank(password))
+        if(StringUtils.isBlank(username)|| StringUtils.isBlank(password))
             return JSONResult.errorMsg("用户名和密码不能为空");
         // 2.实现登录
-        Users user=userService.queryUserForLogin(userName, MD5Utils.getMD5Str(password));
+        Users user=userService.queryUserForLogin(username, MD5Utils.getMD5Str(password));
         if(user==null)
             return JSONResult.errorMsg("用户名或密码不正确");
         //3.将用户隐私信息设置为null

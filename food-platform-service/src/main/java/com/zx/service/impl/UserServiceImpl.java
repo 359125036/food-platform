@@ -43,11 +43,11 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public boolean queryUserNameIsExist(String userName) {
+    public boolean queryUserNameIsExist(String username) {
         Example userExample=new Example(Users.class);
         Example.Criteria userCriteria=userExample.createCriteria();
         //添加where比对条件
-        userCriteria.andEqualTo("username",userName);
+        userCriteria.andEqualTo("username",username);
         Users result=usersMapper.selectOneByExample(userExample);
         return result==null ? false : true;
     }

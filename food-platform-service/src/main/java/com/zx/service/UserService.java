@@ -14,7 +14,7 @@ public interface UserService {
      * @Exception
      * @Date 2019/12/11 11:31
      */
-    public boolean queryUserNameIsExist(String userName);
+    public boolean queryUserNameIsExist(String username);
 
     /**
      * @Method createUser
@@ -36,6 +36,6 @@ public interface UserService {
      * @Exception
      * @Date 2019/12/19 10:16
      */
-    public Users queryUserForLogin(String userName,String password);
+    public Users queryUserForLogin(String username,String password);
 
 }
