@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @ClassName: PassportController
- * @Description: 登录验证
+ * @Description: 登录及退出
  * @Author: zhengxin
  * @Date: 2019/12/6 11:41
  * @Version: 1.0
@@ -140,6 +140,25 @@ public class PassportController {
         user.setUpdatedTime(null);
         user.setBirthday(null);
         return user;
+    }
+    /**
+     * @Method logout
+     * @Author zhengxin
+     * @Version  1.0
+     * @Description 用户退出登录
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2019/12/24 9:20
+     */
+    @ApiOperation(value = "用户退出登录",notes = "用户退出登录",httpMethod = "POST")
+    @PostMapping("/logout")
+    public JSONResult logout(@RequestParam String userId, HttpServletRequest request,
+                             HttpServletResponse response){
+        //清除用户相关的cookie信息
+        CookieUtils.deleteCookie(request,response,"user");
+        //TODO 用户退出登录，需要清空购物车
+        //TODO 分布式会话中需要清除用户数据
+        return JSONResult.ok();
     }
 
 }
