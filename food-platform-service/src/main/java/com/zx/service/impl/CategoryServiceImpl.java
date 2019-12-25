@@ -1,7 +1,10 @@
 package com.zx.service.impl;
 
+import com.zx.enums.CategoryTypeEnum;
 import com.zx.mapper.CategoryMapper;
+import com.zx.mapper.CategoryMapperCustom;
 import com.zx.pojo.Category;
+import com.zx.pojo.vo.CategoryVO;
 import com.zx.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,8 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private CategoryMapperCustom categoryMapperCustom;
     /**
      * @Method queryAllRootCategory
      * @Author zhengxin
@@ -36,8 +41,23 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> queryAllRootCategory() {
         Example example=new Example(Category.class);
         Example.Criteria criteria=example.createCriteria();
-        criteria.andEqualTo("type",1);
+        criteria.andEqualTo("type", CategoryTypeEnum.TOPCATEGORY.type);
         List<Category> categoryList=categoryMapper.selectByExample(example);
         return categoryList;
+    }
+
+    /**
+     * @Method getSubCatList
+     * @Author zhengxin
+     * @Version  1.0
+     * @Description 根据一级分类id查询子分类信息
+     * @Return java.util.List<com.zx.pojo.vo.CategoryVO>
+     * @Exception
+     * @Date 2019/12/25 16:06
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public List<CategoryVO> getSubCatList(Integer rootCatId) {
+        return categoryMapperCustom.getSubCategoryList(rootCatId);
     }
 }
