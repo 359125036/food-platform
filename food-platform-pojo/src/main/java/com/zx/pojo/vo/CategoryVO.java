@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * @ClassName: CategoryVO
- * @Description: 显示在视图层的实体
+ * @Description: 显示在视图层的分类
  * @Author: zhengxin
  * @Date: 2019/12/25 15:47
  * @Version: 1.0

@@ -4,6 +4,7 @@ import com.zx.enums.YesOrNoEnum;
 import com.zx.pojo.Carousel;
 import com.zx.pojo.Category;
 import com.zx.pojo.vo.CategoryVO;
+import com.zx.pojo.vo.NewItemsVO;
 import com.zx.service.CarouselService;
 import com.zx.service.CategoryService;
 import com.zx.utils.JSONResult;
@@ -87,6 +88,28 @@ public class IndexController {
         }
         //通过一级分类id获取子分类
         List<CategoryVO> list= categoryService.getSubCatList(rootCatId);
+        return JSONResult.ok(list);
+    }
+
+    /**
+     * @Method sixNewItems
+     * @Author zhengxin
+     * @Version  1.0
+     * @Description 查询每个一级分类下的最新6条商品数据
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2019/12/27 16:04
+     */
+    @ApiOperation(value = "查询每个一级分类下的最新6条商品数据",notes = "查询每个一级分类下的最新6条商品数据)",httpMethod = "GET")
+    @GetMapping("/sixNewItems/{rootCatId}")
+    public JSONResult sixNewItems(
+            @ApiParam(name = "rootCatId",value = "一级分类id",required = true)
+            @PathVariable Integer rootCatId){
+        if(rootCatId==null){
+            return JSONResult.errorMsg("分类不存在");
+        }
+        //通过一级分类id获取子分类
+        List<NewItemsVO> list= categoryService.getSixNewItemsLazy(rootCatId);
         return JSONResult.ok(list);
     }
 }

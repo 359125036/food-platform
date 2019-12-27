@@ -2,7 +2,7 @@ package com.zx.pojo.vo;
 
 /**
  * @ClassName: SubCategoryVO
- * @Description: 三级分类
+ * @Description: 显示在视图层的三级分类
  * @Author: zhengxin
  * @Date: 2019/12/25 15:55
  * @Version: 1.0
