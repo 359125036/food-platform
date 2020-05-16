@@ -8,6 +8,7 @@ import com.zx.pojo.vo.CommentLevelCountsVO;
 import com.zx.pojo.vo.ItemInfoVO;
 import com.zx.service.impl.ItemServiceImpl;
 import com.zx.utils.JSONResult;
+import com.zx.utils.PagedGridResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -27,7 +28,7 @@ import java.util.List;
 @Api(value = "商品接口",tags = {"商品信息展示的相关接口"})
 @RestController
 @RequestMapping("items")
-public class ItemController {
+public class ItemController extends BaseController{
     @Autowired
     private ItemServiceImpl itemService;
 
@@ -72,5 +73,33 @@ public class ItemController {
         CommentLevelCountsVO countsVO=itemService.queryCommentCounts(itemId);
         return JSONResult.ok(countsVO);
     }
+
+    /**
+     * 查询商品评论内容
+     * @param itemId
+     * @return
+     */
+    @ApiOperation(value = "查询商品评论内容",notes = "查询商品评论内容",httpMethod = "GET")
+    @GetMapping("/comments")
+    public JSONResult comments(
+            @ApiParam(name = "itemId",value = "商品id",required = true)
+            @RequestParam String itemId,
+            @ApiParam(name = "level",value = "评价等级",required = false)
+            @RequestParam Integer level,
+            @ApiParam(name = "page",value = "查询的第几页",required = false)
+            @RequestParam Integer page,
+            @ApiParam(name = "pageSize",value = "每页数量",required = false)
+            @RequestParam Integer pageSize){
+        //判断商品id是否为空
+        if(StringUtils.isBlank(itemId))
+            return JSONResult.errorMsg(null);
+        if(page == null)
+            page = 1;
+        if(pageSize == null)
+            pageSize = COMMENT_PAGE_SIZE;
+        PagedGridResult grid=itemService.queryPagedComments(itemId,level,page,pageSize);
+        return JSONResult.ok(grid);
+    }
+
 
 }

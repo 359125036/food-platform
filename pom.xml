@@ -105,7 +105,7 @@
             <version>1.3.2</version>
         </dependency>
 
-        <!--pagehelper -->
+        <!--pagehelper mybatis分页助手-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>

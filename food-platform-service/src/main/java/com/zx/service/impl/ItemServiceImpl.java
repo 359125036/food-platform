@@ -1,17 +1,25 @@
 package com.zx.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zx.enums.CommentLevel;
 import com.zx.mapper.*;
 import com.zx.pojo.*;
 import com.zx.pojo.vo.CommentLevelCountsVO;
+import com.zx.pojo.vo.ItemCommentVO;
 import com.zx.service.ItemService;
+import com.zx.utils.DesensitizationUtil;
+import com.zx.utils.PageUtil;
+import com.zx.utils.PagedGridResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName: ItemServiceImpl
@@ -32,6 +40,8 @@ public class ItemServiceImpl implements ItemService {
     private ItemsParamMapper itemsParamMapper;
     @Autowired
     private ItemsCommentsMapper itemsCommentsMapper;
+    @Autowired
+    private ItemsMapperCustom itemsMapperCustom;
 
     /**
      * 根据商品id查询商品详情
@@ -130,5 +140,30 @@ public class ItemServiceImpl implements ItemService {
             itemsComments.setCommentLevel(level);
         }
         return itemsCommentsMapper.selectCount(itemsComments);
+    }
+
+    /**
+     * 根据商品id查询商品的评价（分页）
+     * @param itemId
+     * @param level
+     * @return
+     */
+    @Override
+    public PagedGridResult queryPagedComments(String itemId, Integer level, Integer page, Integer pageSize) {
+        Map<String,Object> map=new HashMap<>();
+        map.put("itemId",itemId);
+        map.put("level",level);
+        /**
+         * page:第几页
+         * pageSize：每页显示条数
+         */
+        PageHelper.startPage(page,pageSize);
+        //获取分页后的评价数据
+        List<ItemCommentVO> list=itemsMapperCustom.queryItemComments(map);
+        //脱敏
+        for (ItemCommentVO commentVO : list) {
+            commentVO.setNickname(DesensitizationUtil.commonDisplay(commentVO.getNickname()));
+        }
+        return PageUtil.page(list,page);
     }
 }
