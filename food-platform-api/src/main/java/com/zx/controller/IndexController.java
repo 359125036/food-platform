@@ -78,7 +78,7 @@ public class IndexController {
      * @Exception
      * @Date 2019/12/25 16:20
      */
-    @ApiOperation(value = "获取商品子分类",notes = "获取商品子分类)",httpMethod = "GET")
+    @ApiOperation(value = "获取商品子分类",notes = "获取商品子分类",httpMethod = "GET")
     @GetMapping("/subCat/{rootCatId}")
     public JSONResult subCat(
             @ApiParam(name = "rootCatId",value = "一级分类id",required = true)
@@ -100,7 +100,7 @@ public class IndexController {
      * @Exception
      * @Date 2019/12/27 16:04
      */
-    @ApiOperation(value = "查询每个一级分类下的最新6条商品数据",notes = "查询每个一级分类下的最新6条商品数据)",httpMethod = "GET")
+    @ApiOperation(value = "查询每个一级分类下的最新6条商品数据",notes = "查询每个一级分类下的最新6条商品数据",httpMethod = "GET")
     @GetMapping("/sixNewItems/{rootCatId}")
     public JSONResult sixNewItems(
             @ApiParam(name = "rootCatId",value = "一级分类id",required = true)

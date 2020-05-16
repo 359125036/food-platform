@@ -4,24 +4,24 @@ import javax.persistence.Id;
 
 public class Stu {
     @Id
-    private Integer stu;
+    private Integer id;
 
     private String name;
 
     private Integer age;
 
     /**
-     * @return stu
+     * @return id
      */
-    public Integer getStu() {
-        return stu;
+    public Integer getId() {
+        return id;
     }
 
     /**
-     * @param stu
+     * @param id
      */
-    public void setStu(Integer stu) {
-        this.stu = stu;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**
