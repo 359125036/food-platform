@@ -7,6 +7,7 @@ import com.zx.mapper.*;
 import com.zx.pojo.*;
 import com.zx.pojo.vo.CommentLevelCountsVO;
 import com.zx.pojo.vo.ItemCommentVO;
+import com.zx.pojo.vo.SearchItemsVO;
 import com.zx.service.ItemService;
 import com.zx.utils.DesensitizationUtil;
 import com.zx.utils.PageUtil;
@@ -148,6 +149,7 @@ public class ItemServiceImpl implements ItemService {
      * @param level
      * @return
      */
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public PagedGridResult queryPagedComments(String itemId, Integer level, Integer page, Integer pageSize) {
         Map<String,Object> map=new HashMap<>();
@@ -165,5 +167,29 @@ public class ItemServiceImpl implements ItemService {
             commentVO.setNickname(DesensitizationUtil.commonDisplay(commentVO.getNickname()));
         }
         return PageUtil.page(list,page);
+    }
+
+    /**
+     * 根据关键字或排序搜索商品信息
+     * @param keywords
+     * @param sort
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public PagedGridResult searchItems(String keywords, String sort, Integer page, Integer pageSize) {
+        Map<String ,Object> map=new HashMap<>();
+        map.put("keywords",keywords);
+        map.put("sort",sort);
+
+        /**
+         * page:第几页
+         * pageSize：每页显示条数
+         */
+        PageHelper.startPage(page,pageSize);
+        List<SearchItemsVO> itemsVOList=itemsMapperCustom.searchItems(map);
+        return PageUtil.page(itemsVOList,page);
     }
 }

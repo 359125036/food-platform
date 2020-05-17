@@ -13,4 +13,7 @@ import org.springframework.stereotype.Controller;
 public class BaseController {
     //默认的评论每页数量
     public static final Integer COMMENT_PAGE_SIZE=10;
+
+    //商品列表每页数量
+    public static final Integer PAGE_SIZE=20;
 }

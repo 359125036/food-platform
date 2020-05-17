@@ -77,6 +77,9 @@ public class ItemController extends BaseController{
     /**
      * 查询商品评论内容
      * @param itemId
+     * @param level
+     * @param page
+     * @param pageSize
      * @return
      */
     @ApiOperation(value = "查询商品评论内容",notes = "查询商品评论内容",httpMethod = "GET")
@@ -102,4 +105,30 @@ public class ItemController extends BaseController{
     }
 
 
+    /**
+     * @Method: search
+     * @Author: zhengxin
+     * @Description: 搜索商品列表
+     * @Date: 2020/5/17 11:01
+     * @Exception:
+     */
+
+    @ApiOperation(value = "搜索商品列表",notes = "搜索商品列表",httpMethod = "GET")
+    @GetMapping("/search")
+    public JSONResult search(
+            @ApiParam(name = "keywords",value = "关键字",required = false)
+            @RequestParam String keywords,
+            @ApiParam(name = "sort",value = "排序",required = false)
+            @RequestParam String sort,
+            @ApiParam(name = "page",value = "查询的第几页",required = false)
+            @RequestParam Integer page,
+            @ApiParam(name = "pageSize",value = "每页数量",required = false)
+            @RequestParam Integer pageSize){
+        if(page == null)
+            page = 1;
+        if(pageSize == null)
+            pageSize = PAGE_SIZE;
+        PagedGridResult grid=itemService.searchItems(keywords,sort,page,pageSize);
+        return JSONResult.ok(grid);
+    }
 }

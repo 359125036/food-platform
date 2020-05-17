@@ -57,8 +57,22 @@ public interface ItemService {
      * 根据商品id查询商品的评价（分页）
      * @param itemId
      * @param level
+     * @param page
+     * @param pageSize
      * @return
      */
     public PagedGridResult queryPagedComments(String itemId, Integer level,
+                                              Integer page, Integer pageSize);
+
+
+    /**
+     * 搜索商品信息
+     * @param keywords
+     * @param sort
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public PagedGridResult searchItems(String keywords, String sort,
                                               Integer page, Integer pageSize);
 }
