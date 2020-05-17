@@ -38,7 +38,6 @@ public class IndexController {
     /**
      * @Method carousel
      * @Author zhengxin
-     * @Version  1.0
      * @Description 获取首页轮播图列表
      * @Return com.zx.utils.JSONResult
      * @Exception
@@ -55,7 +54,6 @@ public class IndexController {
     /**
      * @Method cats
      * @Author zhengxin
-     * @Version  1.0
      * @Description 获取商品分类(一级分类)
      * @Return com.zx.utils.JSONResult
      * @Exception
@@ -72,8 +70,8 @@ public class IndexController {
     /**
      * @Method subCat
      * @Author zhengxin
-     * @Version  1.0
      * @Description 通过一级分类id获取子分类
+     * @param rootCatId 一级分类id
      * @Return com.zx.utils.JSONResult
      * @Exception
      * @Date 2019/12/25 16:20
@@ -94,8 +92,8 @@ public class IndexController {
     /**
      * @Method sixNewItems
      * @Author zhengxin
-     * @Version  1.0
      * @Description 查询每个一级分类下的最新6条商品数据
+     * @param rootCatId 一级分类id
      * @Return com.zx.utils.JSONResult
      * @Exception
      * @Date 2019/12/27 16:04
@@ -103,6 +101,7 @@ public class IndexController {
     @ApiOperation(value = "查询每个一级分类下的最新6条商品数据",notes = "查询每个一级分类下的最新6条商品数据",httpMethod = "GET")
     @GetMapping("/sixNewItems/{rootCatId}")
     public JSONResult sixNewItems(
+
             @ApiParam(name = "rootCatId",value = "一级分类id",required = true)
             @PathVariable Integer rootCatId){
         if(rootCatId==null){

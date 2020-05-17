@@ -192,4 +192,30 @@ public class ItemServiceImpl implements ItemService {
         List<SearchItemsVO> itemsVOList=itemsMapperCustom.searchItems(map);
         return PageUtil.page(itemsVOList,page);
     }
+
+    /**
+     * @Method: searchItemsByThirdCat
+     * @Author: zhengxin
+     * @Description: 通过三级分类id搜索商品信息
+     * @param catId
+     * @param sort
+     * @param page
+     * @param pageSize
+     * @Date: 2020/5/17 14:53
+     * @Exception:
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public PagedGridResult searchItemsByThirdCat(Integer catId, String sort, Integer page, Integer pageSize) {
+        Map<String ,Object> map=new HashMap<>();
+        map.put("catId",catId);
+        map.put("sort",sort);
+        /**
+         * page:第几页
+         * pageSize：每页显示条数
+         */
+        PageHelper.startPage(page,pageSize);
+        List<SearchItemsVO> itemsVOList=itemsMapperCustom.searchItemsByThirdCat(map);
+        return PageUtil.page(itemsVOList,page);
+    }
 }

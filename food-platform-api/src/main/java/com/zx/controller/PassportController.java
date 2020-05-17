@@ -33,8 +33,8 @@ public class PassportController {
     /**
      * @Method usernameIsExist
      * @Author zhengxin
-     * @Version  1.0
      * @Description 验证用户名是否存在
+     * @param username 用户名
      * @Return int
      * @Exception
      * @Date 2019/12/11 14:04
@@ -57,8 +57,10 @@ public class PassportController {
     /**
      * @Method regist
      * @Author zhengxin
-     * @Version  1.0
      * @Description 用户注册
+     * @param userBO 页面提交参数
+     * @param request
+     * @param response
      * @Return com.zx.utils.JSONResult
      * @Exception
      * @Date 2019/12/13 14:14
@@ -97,8 +99,10 @@ public class PassportController {
     /**
      * @Method login
      * @Author zhengxin
-     * @Version  1.0
      * @Description 用户登录
+     * @param userBO 页面提交参数
+     * @param request
+     * @param response
      * @Return com.zx.utils.JSONResult
      * @Exception
      * @Date 2019/12/19 10:50
@@ -126,7 +130,6 @@ public class PassportController {
     /**
      * @Method setNullProperty
      * @Author zhengxin
-     * @Version  1.0
      * @Description 将用户隐私信息设置为null
      * @Return com.zx.pojo.Users
      * @Exception
@@ -144,7 +147,6 @@ public class PassportController {
     /**
      * @Method logout
      * @Author zhengxin
-     * @Version  1.0
      * @Description 用户退出登录
      * @Return com.zx.utils.JSONResult
      * @Exception
