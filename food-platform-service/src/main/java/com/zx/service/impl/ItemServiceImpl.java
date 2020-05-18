@@ -8,6 +8,7 @@ import com.zx.pojo.*;
 import com.zx.pojo.vo.CommentLevelCountsVO;
 import com.zx.pojo.vo.ItemCommentVO;
 import com.zx.pojo.vo.SearchItemsVO;
+import com.zx.pojo.vo.ShopcartVO;
 import com.zx.service.ItemService;
 import com.zx.utils.DesensitizationUtil;
 import com.zx.utils.PageUtil;
@@ -18,9 +19,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName: ItemServiceImpl
@@ -217,5 +216,23 @@ public class ItemServiceImpl implements ItemService {
         PageHelper.startPage(page,pageSize);
         List<SearchItemsVO> itemsVOList=itemsMapperCustom.searchItemsByThirdCat(map);
         return PageUtil.page(itemsVOList,page);
+    }
+
+
+    /**
+     * @Method queryItemsBySpecIds
+     * @Author zhengxin
+     * @Description 根据商品拼接的规格itemSpecIds获取商品信息
+     * @param itemSpecIds
+     * @Return
+     * @Exception
+     * @Date 2020/5/18 20:43
+     */
+    @Override
+    public List<ShopcartVO> queryItemsBySpecIds(String itemSpecIds) {
+        String ids[] =itemSpecIds.split(",");
+        List<String> list=new ArrayList<>();
+        Collections.addAll(list,ids);
+        return itemsMapperCustom.queryItemsBySpecIds(list);
     }
 }

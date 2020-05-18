@@ -6,6 +6,7 @@ import com.zx.pojo.ItemsParam;
 import com.zx.pojo.ItemsSpec;
 import com.zx.pojo.vo.CommentLevelCountsVO;
 import com.zx.pojo.vo.ItemInfoVO;
+import com.zx.pojo.vo.ShopcartVO;
 import com.zx.service.impl.ItemServiceImpl;
 import com.zx.utils.JSONResult;
 import com.zx.utils.PagedGridResult;
@@ -184,6 +185,27 @@ public class ItemController extends BaseController{
             pageSize = PAGE_SIZE;
         PagedGridResult grid=itemService.searchItems(keywords,sort,page,pageSize);
         return JSONResult.ok(grid);
+    }
+
+    /**
+     * @Method refresh
+     * @Author zhengxin
+     * @Description 根据商品规格ids查找最新的商品数据
+     * @param itemSpecIds
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2020/5/18 20:54
+     */
+    @ApiOperation(value = "根据商品规格ids查找最新的商品数据",notes = "根据商品规格ids查找最新的商品数据",httpMethod = "GET")
+    @GetMapping("/refresh")
+    public JSONResult refresh(
+            @ApiParam(name = "itemSpecIds",value = "拼接的规格ids",required = false,example = "1,2,3")
+            @RequestParam String itemSpecIds){
+        //判断规格ids是否为空
+        if(StringUtils.isBlank(itemSpecIds))
+            return JSONResult.ok();
+        List<ShopcartVO> shopcartVOList=itemService.queryItemsBySpecIds(itemSpecIds);
+        return JSONResult.ok(shopcartVOList);
     }
 
 }

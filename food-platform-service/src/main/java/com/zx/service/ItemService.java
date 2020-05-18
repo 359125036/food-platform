@@ -5,6 +5,7 @@ import com.zx.pojo.ItemsImg;
 import com.zx.pojo.ItemsParam;
 import com.zx.pojo.ItemsSpec;
 import com.zx.pojo.vo.CommentLevelCountsVO;
+import com.zx.pojo.vo.ShopcartVO;
 import com.zx.utils.PagedGridResult;
 
 import java.util.List;
@@ -86,4 +87,15 @@ public interface ItemService {
      */
     public PagedGridResult searchItemsByThirdCat(Integer catId, String sort,
                                        Integer page, Integer pageSize);
+
+    /**
+     * @Method queryItemsBySpecIds
+     * @Author zhengxin
+     * @Description 根据商品拼接的规格itemSpecIds获取商品信息
+     * @param itemSpecIds
+     * @Return
+     * @Exception
+     * @Date 2020/5/18 20:43
+     */
+    public List<ShopcartVO> queryItemsBySpecIds(String itemSpecIds);
 }
