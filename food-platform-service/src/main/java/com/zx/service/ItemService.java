@@ -100,10 +100,37 @@ public interface ItemService {
     public List<ShopcartVO> queryItemsBySpecIds(String itemSpecIds);
 
 
-
+    /**
+     * @Method queryItemSpecById
+     * @Author zhengxin
+     * @Description 获取商品规格信息
+     * @param specId 商品规格id
+     * @Return
+     * @Exception
+     * @Date 2020/5/23 21:03
+     */
     public ItemsSpec queryItemSpecById(String specId);
 
+    /**
+     * @Method queryItemMainImgById
+     * @Author zhengxin
+     * @Description 查询主图片id
+     * @param itemId 商品id
+     * @Return
+     * @Exception
+     * @Date 2020/5/23 21:04
+     */
     public String queryItemMainImgById(String itemId) ;
 
+    /**
+     * @Method decreaseItemSpecStock
+     * @Author zhengxin
+     * @Description 修改库存
+     * @param specId 规格id
+     * @param buyCounts 商品件数
+     * @Return
+     * @Exception
+     * @Date 2020/5/23 21:04
+     */
     public void decreaseItemSpecStock(String specId, int buyCounts) ;
 }

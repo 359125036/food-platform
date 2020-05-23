@@ -152,7 +152,16 @@ public class AddressServiceImpl implements AddressService {
         userAddressMapper.updateByPrimaryKeySelective(defaultAddress);
 
     }
-
+    /**
+     * @Method queryUserAddres
+     * @Author zhengxin
+     * @Description 查询用户地址
+     * @param userId 用户id
+     * @param addressId 地址表id
+     * @Return com.zx.pojo.UserAddress
+     * @Exception
+     * @Date 2020/5/23 21:11
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public UserAddress queryUserAddres(String userId, String addressId) {

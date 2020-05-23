@@ -36,6 +36,17 @@ public class OrdersController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
+    /**
+     * @Method create
+     * @Author zhengxin
+     * @Description 用户下单
+     * @param submitOrderBO
+     * @param request
+     * @param response
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2020/5/23 21:10
+     */
     @ApiOperation(value = "用户下单", notes = "用户下单", httpMethod = "POST")
     @PostMapping("/create")
     public JSONResult create(

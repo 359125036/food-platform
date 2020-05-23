@@ -1,7 +1,6 @@
 package com.zx.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.zx.enums.CommentLevel;
 import com.zx.enums.YesOrNoEnum;
 import com.zx.mapper.*;
@@ -237,12 +236,30 @@ public class ItemServiceImpl implements ItemService {
         return itemsMapperCustom.queryItemsBySpecIds(list);
     }
 
+    /**
+     * @Method queryItemSpecById
+     * @Author zhengxin
+     * @Description 获取商品规格信息
+     * @param specId 商品规格id
+     * @Return
+     * @Exception
+     * @Date 2020/5/23 21:03
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public ItemsSpec queryItemSpecById(String specId) {
         return itemsSpecMapper.selectByPrimaryKey(specId);
     }
 
+    /**
+     * @Method queryItemMainImgById
+     * @Author zhengxin
+     * @Description 查询主图片id
+     * @param itemId 商品id
+     * @Return
+     * @Exception
+     * @Date 2020/5/23 21:04
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public String queryItemMainImgById(String itemId) {
@@ -253,6 +270,16 @@ public class ItemServiceImpl implements ItemService {
         return result != null ? result.getUrl() : "";
     }
 
+    /**
+     * @Method decreaseItemSpecStock
+     * @Author zhengxin
+     * @Description 根据购买数量减少库存
+     * @param specId 商品规格id
+     * @param buyCounts 购买件数
+     * @Return void
+     * @Exception
+     * @Date 2020/5/23 21:08
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void decreaseItemSpecStock(String specId, int buyCounts) {
@@ -274,7 +301,7 @@ public class ItemServiceImpl implements ItemService {
 
         // lockUtil.unLock(); -- 解锁
 
-
+        //修改库存
         int result = itemsMapperCustom.decreaseItemSpecStock(specId, buyCounts);
         if (result != 1) {
             throw new RuntimeException("订单创建失败，原因：库存不足!");

@@ -41,6 +41,15 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private Sid sid;
 
+    /**
+     * @Method createOrder
+     * @Author zhengxin
+     * @Description 创建订单
+     * @param submitOrderBO
+     * @Return com.zx.pojo.vo.OrderVO
+     * @Exception
+     * @Date 2020/5/23 21:13
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public OrderVO createOrder(SubmitOrderBO submitOrderBO) {
@@ -144,7 +153,16 @@ public class OrderServiceImpl implements OrderService {
 
         return orderVO;
     }
-
+    /**
+     * @Method updateOrderStatus
+     * @Author zhengxin
+     * @Description 修改订单状态
+     * @param orderId 订单id
+     * @param orderStatus 订单状态
+     * @Return void
+     * @Exception
+     * @Date 2020/5/23 21:12
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void updateOrderStatus(String orderId, Integer orderStatus) {
