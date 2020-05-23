@@ -98,4 +98,12 @@ public interface ItemService {
      * @Date 2020/5/18 20:43
      */
     public List<ShopcartVO> queryItemsBySpecIds(String itemSpecIds);
+
+
+
+    public ItemsSpec queryItemSpecById(String specId);
+
+    public String queryItemMainImgById(String itemId) ;
+
+    public void decreaseItemSpecStock(String specId, int buyCounts) ;
 }
