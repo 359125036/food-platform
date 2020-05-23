@@ -13,6 +13,7 @@
         <module>food-platform-mapper</module>
         <module>food-platform-service</module>
         <module>food-platform-api</module>
+        <module>foodie-payment</module>
     </modules>
 
     <!--
