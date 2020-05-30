@@ -48,6 +48,18 @@ public class CenterUserController {
     @Autowired
     private FileUpload fileUpload;
 
+    /**
+     * @Method uploadFace
+     * @Author zhengxin
+     * @Description 用户头像修改
+     * @param userId 用户id
+     * @param file 文件
+     * @param request
+     * @param response
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2020/5/30 10:21
+     */
     @ApiOperation(value = "用户头像修改", notes = "用户头像修改", httpMethod = "POST")
     @PostMapping("uploadFace")
     public JSONResult uploadFace(
@@ -60,7 +72,6 @@ public class CenterUserController {
         // .sh .php
 
         // 定义头像保存的地址
-//        String fileSpace = IMAGE_USER_FACE_LOCATION;
         String fileSpace = fileUpload.getImageUserFaceLocation();
         // 在路径上为每一个用户增加一个userid，用于区分不同用户上传
         String uploadPathPrefix = "/" + userId;
