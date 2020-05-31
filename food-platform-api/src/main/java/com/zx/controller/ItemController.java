@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @ClassName: ItemController
  * @Author: zhengxin
- * @Description: ${description}
+ * @Description: 商品接口
  * @Date: 2020/5/16 17:32
  * @Version: 1.0
  */
