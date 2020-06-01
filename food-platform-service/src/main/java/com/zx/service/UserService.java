@@ -4,6 +4,13 @@ package com.zx.service;
 import com.zx.pojo.Users;
 import com.zx.pojo.bo.UserBO;
 
+/**
+ * @ClassName: UserService
+ * @Author: zhengxin
+ * @Description: 用户相关
+ * @Date: 2020/5/16 17:02
+ * @Version: 1.0
+ */
 public interface UserService {
     /**
      * @Method queryUserNameIsExist

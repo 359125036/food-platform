@@ -11,6 +11,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @ClassName: MyOrdersController
+ * @Author: zhengxin
+ * @Description: 用户中心我的订单相关接口
+ * @Date: 2020/6/01 21:25
+ * @Version: 1.0
+ */
 @Api(value = "用户中心我的订单", tags = {"用户中心我的订单相关接口"})
 @RestController
 @RequestMapping("myorders")
@@ -19,6 +26,15 @@ public class MyOrdersController extends BaseController {
 //    @Autowired
 //    private MyOrdersService myOrdersService;
 
+    /**
+     * @Method statusCounts
+     * @Author zhengxin
+     * @Description 获得订单状态数概况
+     * @param userId 用户id
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2020/6/1 21:27
+     */
     @ApiOperation(value = "获得订单状态数概况", notes = "获得订单状态数概况", httpMethod = "POST")
     @PostMapping("/statusCounts")
     public JSONResult statusCounts(
@@ -34,6 +50,18 @@ public class MyOrdersController extends BaseController {
         return JSONResult.ok(result);
     }
 
+    /**
+     * @Method query
+     * @Author zhengxin
+     * @Description 查询订单列表
+     * @param userId 用户id
+     * @param orderStatus 订单状态
+     * @param page 查询下一页的第几页
+     * @param pageSize 分页的每一页显示的条数
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2020/6/1 21:28
+     */
     @ApiOperation(value = "查询订单列表", notes = "查询订单列表", httpMethod = "POST")
     @PostMapping("/query")
     public JSONResult query(
@@ -64,8 +92,15 @@ public class MyOrdersController extends BaseController {
         return JSONResult.ok(grid);
     }
 
-
-    // 商家发货没有后端，所以这个接口仅仅只是用于模拟
+    /**
+     * @Method deliver
+     * @Author zhengxin
+     * @Description 商家发货（商家发货没有后端，所以这个接口仅仅只是用于模拟）
+     * @param orderId 订单id
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2020/6/1 21:28
+     */
     @ApiOperation(value="商家发货", notes="商家发货", httpMethod = "GET")
     @GetMapping("/deliver")
     public JSONResult deliver(
@@ -79,7 +114,16 @@ public class MyOrdersController extends BaseController {
         return JSONResult.ok();
     }
 
-
+    /**
+     * @Method confirmReceive
+     * @Author zhengxin
+     * @Description 用户确认收货
+     * @param orderId 订单id
+     * @param userId 用户id
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2020/6/1 21:29
+     */
     @ApiOperation(value="用户确认收货", notes="用户确认收货", httpMethod = "POST")
     @PostMapping("/confirmReceive")
     public JSONResult confirmReceive(
@@ -101,6 +145,16 @@ public class MyOrdersController extends BaseController {
         return JSONResult.ok();
     }
 
+    /**
+     * @Method delete
+     * @Author zhengxin
+     * @Description 用户删除订单
+     * @param orderId 订单id
+     * @param userId 用户id
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2020/6/1 21:29
+     */
     @ApiOperation(value="用户删除订单", notes="用户删除订单", httpMethod = "POST")
     @PostMapping("/delete")
     public JSONResult delete(
@@ -122,7 +176,17 @@ public class MyOrdersController extends BaseController {
         return JSONResult.ok();
     }
 
-
+    /**
+     * @Method trend
+     * @Author zhengxin
+     * @Description 查询订单动向
+     * @param userId 用户id
+     * @param page 查询下一页的第几页
+     * @param pageSize 分页的每一页显示的条数
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2020/6/1 21:30
+     */
     @ApiOperation(value = "查询订单动向", notes = "查询订单动向", httpMethod = "POST")
     @PostMapping("/trend")
     public JSONResult trend(

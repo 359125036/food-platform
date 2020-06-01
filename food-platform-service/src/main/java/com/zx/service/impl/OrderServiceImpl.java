@@ -22,6 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @ClassName: OrderServiceImpl
+ * @Author: zhengxin
+ * @Description: 订单 业务层
+ * @Date: 2020/6/1 21:15
+ * @Version: 1.0
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
 

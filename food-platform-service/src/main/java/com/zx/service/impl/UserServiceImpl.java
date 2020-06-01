@@ -17,8 +17,8 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.Date;
 
 /**
- * @ClassName: StuServiceImpl
- * @Description: TODO
+ * @ClassName: UserServiceImpl
+ * @Description: 用户相关接口
  * @Author: zhengxin
  * @Date: 2019/12/9 17:01
  * @Version: 1.0

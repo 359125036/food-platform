@@ -1,5 +1,11 @@
 package com.zx.enums;
-//性别的枚举
+/**
+ * @ClassName: SexEnum
+ * @Author: zhengxin
+ * @Description: 性别 枚举
+ * @Date: 2020/5/25 22:05
+ * @Version: 1.0
+ */
 public enum SexEnum {
 
     woman(0,"女"),

@@ -4,6 +4,13 @@ import com.zx.pojo.OrderStatus;
 import com.zx.pojo.bo.SubmitOrderBO;
 import com.zx.pojo.vo.OrderVO;
 
+/**
+ * @ClassName: OrderService
+ * @Author: zhengxin
+ * @Description: 订单相关
+ * @Date: 2020/5/16 17:02
+ * @Version: 1.0
+ */
 public interface OrderService {
 
     /**

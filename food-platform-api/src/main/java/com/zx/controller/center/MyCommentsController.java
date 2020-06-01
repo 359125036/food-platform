@@ -18,6 +18,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @ClassName: MyCommentsController
+ * @Author: zhengxin
+ * @Description: 用户中心评价模块相关接口
+ * @Date: 2020/6/01 21:24
+ * @Version: 1.0
+ */
 @Api(value = "用户中心评价模块", tags = {"用户中心评价模块相关接口"})
 @RestController
 @RequestMapping("mycomments")
@@ -26,6 +33,16 @@ public class MyCommentsController extends BaseController {
     @Autowired
     private MyCommentsService myCommentsService;
 
+    /**
+     * @Method pending
+     * @Author zhengxin
+     * @Description 查询订单列表
+     * @param userId 用户id
+     * @param orderId 订单id
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2020/6/1 21:25
+     */
     @ApiOperation(value = "查询订单列表", notes = "查询订单列表", httpMethod = "POST")
     @PostMapping("/pending")
     public JSONResult pending(
@@ -50,7 +67,17 @@ public class MyCommentsController extends BaseController {
         return JSONResult.ok(list);
     }
 
-
+    /**
+     * @Method saveList
+     * @Author zhengxin
+     * @Description 保存评论列表
+     * @param userId 用户id
+     * @param orderId 订单id
+     * @param commentList 商品评价集合
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2020/6/1 21:25
+     */
     @ApiOperation(value = "保存评论列表", notes = "保存评论列表", httpMethod = "POST")
     @PostMapping("/saveList")
     public JSONResult saveList(
@@ -76,6 +103,17 @@ public class MyCommentsController extends BaseController {
         return JSONResult.ok();
     }
 
+    /**
+     * @Method query
+     * @Author zhengxin
+     * @Description 查询我的评价
+     * @param userId 用户id
+     * @param page 查询下一页的第几页
+     * @param pageSize 分页的每一页显示的条数
+     * @Return com.zx.utils.JSONResult
+     * @Exception
+     * @Date 2020/6/1 21:27
+     */
     @ApiOperation(value = "查询我的评价", notes = "查询我的评价", httpMethod = "POST")
     @PostMapping("/query")
     public JSONResult query(

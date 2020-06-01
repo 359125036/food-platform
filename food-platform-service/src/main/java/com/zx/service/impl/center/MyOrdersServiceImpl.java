@@ -24,6 +24,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @ClassName: MyOrdersServiceImpl
+ * @Author: zhengxin
+ * @Description: 个人订单 业务层
+ * @Date: 2020/6/1 21:47
+ * @Version: 1.0
+ */
 @Service
 public class MyOrdersServiceImpl implements MyOrdersService {
 
@@ -36,6 +43,18 @@ public class MyOrdersServiceImpl implements MyOrdersService {
     @Autowired
     public OrderStatusMapper orderStatusMapper;
 
+    /**
+     * @Method queryMyOrders
+     * @Author zhengxin
+     * @Description 查询我的订单列表
+     * @param userId 用户id
+     * @param orderStatus 订单状态
+     * @param page 页码
+     * @param pageSize 每页数量
+     * @Return com.zx.utils.PagedGridResult
+     * @Exception
+     * @Date 2020/6/1 21:34
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public PagedGridResult queryMyOrders(String userId,
@@ -56,16 +75,15 @@ public class MyOrdersServiceImpl implements MyOrdersService {
         return PageUtil.page(list, page);
     }
 
-//    private PagedGridResult setterPagedGrid(List<?> list, Integer page) {
-//        PageInfo<?> pageList = new PageInfo<>(list);
-//        PagedGridResult grid = new PagedGridResult();
-//        grid.setPage(page);
-//        grid.setRows(list);
-//        grid.setTotal(pageList.getPages());
-//        grid.setRecords(pageList.getTotal());
-//        return grid;
-//    }
-
+    /**
+     * @Method updateDeliverOrderStatus
+     * @Author zhengxin
+     * @Description  订单状态 --> 商家发货
+     * @param orderId 订单id
+     * @Return void
+     * @Exception
+     * @Date 2020/6/1 21:35
+     */
     @Transactional(propagation=Propagation.REQUIRED)
     @Override
     public void updateDeliverOrderStatus(String orderId) {
@@ -82,6 +100,16 @@ public class MyOrdersServiceImpl implements MyOrdersService {
         orderStatusMapper.updateByExampleSelective(updateOrder, example);
     }
 
+    /**
+     * @Method queryMyOrder
+     * @Author zhengxin
+     * @Description 查询我的订单
+     * @param userId 用户id
+     * @param orderId 订单id
+     * @Return com.zx.pojo.Orders
+     * @Exception
+     * @Date 2020/6/1 21:36
+     */
     @Transactional(propagation=Propagation.SUPPORTS)
     @Override
     public Orders queryMyOrder(String userId, String orderId) {
@@ -94,6 +122,15 @@ public class MyOrdersServiceImpl implements MyOrdersService {
         return ordersMapper.selectOne(orders);
     }
 
+    /**
+     * @Method updateReceiveOrderStatus
+     * @Author zhengxin
+     * @Description 更新订单状态 —> 确认收货
+     * @param orderId 订单id
+     * @Return boolean
+     * @Exception
+     * @Date 2020/6/1 21:37
+     */
     @Transactional(propagation=Propagation.REQUIRED)
     @Override
     public boolean updateReceiveOrderStatus(String orderId) {
@@ -112,6 +149,16 @@ public class MyOrdersServiceImpl implements MyOrdersService {
         return result == 1 ? true : false;
     }
 
+    /**
+     * @Method deleteOrder
+     * @Author zhengxin
+     * @Description 删除订单
+     * @param userId 用户id
+     * @param orderId 订单id
+     * @Return boolean
+     * @Exception
+     * @Date 2020/6/1 21:44
+     */
     @Transactional(propagation=Propagation.REQUIRED)
     @Override
     public boolean deleteOrder(String userId, String orderId) {
@@ -130,6 +177,15 @@ public class MyOrdersServiceImpl implements MyOrdersService {
         return result == 1 ? true : false;
     }
 
+    /**
+     * @Method getOrderStatusCounts
+     * @Author zhengxin
+     * @Description 查询用户订单数
+     * @param userId 用户id
+     * @Return com.zx.pojo.vo.OrderStatusCountsVO
+     * @Exception
+     * @Date 2020/6/1 21:45
+     */
     @Transactional(propagation=Propagation.SUPPORTS)
     @Override
     public OrderStatusCountsVO getOrderStatusCounts(String userId) {
@@ -157,6 +213,17 @@ public class MyOrdersServiceImpl implements MyOrdersService {
         return countsVO;
     }
 
+    /**
+     * @Method getOrdersTrend
+     * @Author zhengxin
+     * @Description 获得分页的订单动向
+     * @param userId 用户id
+     * @param page 页码
+     * @param pageSize 每页数量
+     * @Return com.zx.utils.PagedGridResult
+     * @Exception
+     * @Date 2020/6/1 21:45
+     */
     @Transactional(propagation=Propagation.SUPPORTS)
     @Override
     public PagedGridResult getOrdersTrend(String userId, Integer page, Integer pageSize) {

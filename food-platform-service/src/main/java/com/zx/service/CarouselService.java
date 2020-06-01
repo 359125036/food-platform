@@ -5,6 +5,13 @@ import com.zx.pojo.Carousel;
 
 import java.util.List;
 
+/**
+ * @ClassName: CarouselService
+ * @Author: zhengxin
+ * @Description: 查询显示的轮播图列表
+ * @Date: 2020/5/16 17:02
+ * @Version: 1.0
+ */
 public interface CarouselService {
 
     /**

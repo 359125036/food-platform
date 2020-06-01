@@ -25,6 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @ClassName: MyCommentsServiceImpl
+ * @Author: zhengxin
+ * @Description: 个人评价 业务层
+ * @Date: 2020/6/1 21:46
+ * @Version: 1.0
+ */
 @Service
 public class MyCommentsServiceImpl implements MyCommentsService {
 
@@ -43,6 +50,15 @@ public class MyCommentsServiceImpl implements MyCommentsService {
     @Autowired
     private Sid sid;
 
+    /**
+     * @Method queryPendingComment
+     * @Author zhengxin
+     * @Description 根据订单id查询关联的商品
+      * @param orderId 订单id
+     * @Return  java.util.List<com.zx.pojo.OrderItems>
+     * @Exception
+     * @Date 2020/6/1 21:32
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<OrderItems> queryPendingComment(String orderId) {
@@ -51,6 +67,17 @@ public class MyCommentsServiceImpl implements MyCommentsService {
         return orderItemsMapper.select(query);
     }
 
+    /**
+     * @Method saveComments
+     * @Author zhengxin
+     * @Description 保存用户的评论
+     * @param orderId 订单id
+     * @param userId 用户id
+     * @param commentList 商品订单评价集合
+     * @Return void
+     * @Exception
+     * @Date 2020/6/1 21:32
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void saveComments(String orderId, String userId,
@@ -78,6 +105,17 @@ public class MyCommentsServiceImpl implements MyCommentsService {
         orderStatusMapper.updateByPrimaryKeySelective(orderStatus);
     }
 
+    /**
+     * @Method queryMyComments
+     * @Author zhengxin
+     * @Description  我的评价查询 分页
+     * @param userId 用户id
+     * @param page 页码
+     * @param pageSize 每页数量
+     * @Return com.zx.utils.PagedGridResult
+     * @Exception
+     * @Date 2020/6/1 21:34
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public PagedGridResult queryMyComments(String userId,

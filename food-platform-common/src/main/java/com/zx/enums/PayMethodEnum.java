@@ -1,7 +1,11 @@
 package com.zx.enums;
 
 /**
+ * @ClassName: PayMethodEnum
+ * @Author: zhengxin
  * @Description: 支付方式 枚举
+ * @Date: 2020/5/24 22:05
+ * @Version: 1.0
  */
 public enum PayMethodEnum {
 

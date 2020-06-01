@@ -6,7 +6,13 @@ import com.zx.pojo.vo.NewItemsVO;
 
 import java.util.List;
 
-//商品分类接口
+/**
+ * @ClassName: CategoryService
+ * @Author: zhengxin
+ * @Description: 商品分类接口
+ * @Date: 2020/5/16 17:02
+ * @Version: 1.0
+ */
 public interface CategoryService {
     /**
      * @Method queryAllRootCategory

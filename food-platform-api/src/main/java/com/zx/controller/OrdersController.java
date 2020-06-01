@@ -23,6 +23,13 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @ClassName: OrdersController
+ * @Author: zhengxin
+ * @Description: 订单相关
+ * @Date: 2020/5/26 17:32
+ * @Version: 1.0
+ */
 @Api(value = "订单相关", tags = {"订单相关的api接口"})
 @RequestMapping("orders")
 @RestController
