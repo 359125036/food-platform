@@ -1,0 +1,7 @@
+server:
+  port: 80
+
+spring:
+  datasource:                                           # 数据源的相关配置
+    url: jdbc:mysql://172.18.204.243:3306/foodie-shop-dev?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+    password: zhengxin6401808
