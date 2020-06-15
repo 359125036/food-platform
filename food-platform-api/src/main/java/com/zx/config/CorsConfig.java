@@ -22,7 +22,11 @@ public class CorsConfig {
         //1.添加cors（跨域）配置
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("http://localhost:8080");
-
+        corsConfiguration.addAllowedOrigin("http://shop.food.zhengxinwang.xyz:8080");
+        corsConfiguration.addAllowedOrigin("http://center.food.zhengxinwang.xyz:8080");
+        corsConfiguration.addAllowedOrigin("http://shop.food.zhengxinwang.xyz");
+        corsConfiguration.addAllowedOrigin("http://center.food.zhengxinwang.xyz");
+        corsConfiguration.addAllowedOrigin("http://47.115.41.69:8080");
         // 设置是否发送cookie信息
         corsConfiguration.setAllowCredentials(true);
 
