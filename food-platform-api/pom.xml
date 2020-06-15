@@ -11,6 +11,10 @@
 
     <artifactId>food-platform-api</artifactId>
 
+    <!--<packaging>jar</packaging>-->
+    <!-- 打包war [1] -->
+    <packaging>war</packaging>
+
     <dependencies>
         <!--
             food-platform-api依赖于food-platform-service依赖于food-platform-mapper依赖于food-platform-pojo依赖于food-platform-common,
