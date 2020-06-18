@@ -19,14 +19,14 @@
 ############################################################
 # 通用 Mapper 配置
 mapper:
-  mappers: com.imooc.my.mapper.MyMapper
-  not-empty: false
+  mappers: com.zx.my.mapper.MyMapper
+  not-empty: false #在进行数据库操作时，判断表达式username!=null 是否自动填充username！=""
   identity: MYSQL
 ```
   
 ## 3. 引入 MyMapper 接口类
 ```java
-package com.imooc.my.mapper;
+package com.zx.my.mapper;
 
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;

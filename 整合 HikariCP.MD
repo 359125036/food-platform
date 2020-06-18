@@ -46,7 +46,7 @@ spring:
 #
 ############################################################
 mybatis:
-  type-aliases-package: com.imooc.pojo          # 所有POJO类所在包路径
+  type-aliases-package: com.zx.pojo          # 所有POJO类所在包路径
   mapper-locations: classpath:mapper/*.xml      # mapper映射文件
 ```
   
