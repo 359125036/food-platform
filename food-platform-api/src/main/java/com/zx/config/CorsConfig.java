@@ -27,6 +27,7 @@ public class CorsConfig {
         corsConfiguration.addAllowedOrigin("http://shop.food.zhengxinwang.xyz");
         corsConfiguration.addAllowedOrigin("http://center.food.zhengxinwang.xyz");
         corsConfiguration.addAllowedOrigin("http://47.115.41.69:8080");
+        corsConfiguration.addAllowedOrigin("*");
         // 设置是否发送cookie信息
         corsConfiguration.setAllowCredentials(true);
 
