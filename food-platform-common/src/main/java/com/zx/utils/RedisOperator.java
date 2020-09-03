@@ -9,8 +9,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * @Title: Redis 工具类
- * @author 慕课网
+ * @ClassName: RedisOperator
+ * @Description: Redis 工具类
+ * @Author: zhengxin
+ * @Date: 2020/09/03 11:41
+ * @Version: 1.0
  */
 @Component
 public class RedisOperator {

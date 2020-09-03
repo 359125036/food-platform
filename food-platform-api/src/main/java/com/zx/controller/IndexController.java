@@ -8,15 +8,19 @@ import com.zx.pojo.vo.NewItemsVO;
 import com.zx.service.CarouselService;
 import com.zx.service.CategoryService;
 import com.zx.utils.JSONResult;
+import com.zx.utils.JsonUtils;
+import com.zx.utils.RedisOperator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +38,8 @@ public class IndexController {
     private CarouselService carouselService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private RedisOperator redisOperator;
 
     /**
      * @Method carousel
@@ -46,8 +52,17 @@ public class IndexController {
     @ApiOperation(value = "获取首页轮播图列表",notes = "获取首页轮播图列表",httpMethod = "GET")
     @GetMapping("/carousel")
     public JSONResult carousel(){
-        //获取首页轮播图列表
-        List<Carousel> carouselList= carouselService.queryAllCarousel(YesOrNoEnum.YES.type);
+        List<Carousel> carouselList=new ArrayList<>();
+        String carouselStr=redisOperator.get("carousel");
+        //redis没有轮播图数据时，查询数据库
+        if(StringUtils.isBlank(carouselStr)){
+            //获取首页轮播图列表
+            carouselList= carouselService.queryAllCarousel(YesOrNoEnum.YES.type);
+            //将轮播图数据加入redis
+            redisOperator.set("carousel", JsonUtils.objectToJson(carouselList));
+        }else{
+            carouselList=JsonUtils.jsonToList(carouselStr,Carousel.class);
+        }
         return JSONResult.ok(carouselList);
     }
 
