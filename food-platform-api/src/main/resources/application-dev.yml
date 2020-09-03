@@ -5,6 +5,18 @@ spring:
   datasource:                                           # 数据源的相关配置
     url: jdbc:mysql://localhost:3306/foodie-shop-dev?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
     password: root
+  redis:
+    database: 0
+    host: 47.115.41.69
+    port: 6379
+    password: zhengXIN@123
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1s
+        min-idle: 0
+        max-idle: 0
+    timeout: 5000s
 
 mybatis:
   configuration:
