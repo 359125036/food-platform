@@ -67,6 +67,12 @@ public class IndexController {
     }
 
     /**
+     *1.后台运营系统，一旦广告（轮播图）发生更改，就可以删除缓存进行重置
+     *2.定时重置，比如每天凌晨重置
+     *3.每个轮播图都有可能是一个广告，每个广告都会有一个过期时间，过期后重置
+    * */
+
+    /**
      * @Method cats
      * @Author zhengxin
      * @Description 获取商品分类(一级分类)
@@ -77,8 +83,17 @@ public class IndexController {
     @ApiOperation(value = "获取商品分类(一级分类)",notes = "获取商品分类(一级分类)",httpMethod = "GET")
     @GetMapping("/cats")
     public JSONResult cats(){
-        //获取商品分类(一级分类)
-        List<Category> categoryList= categoryService.queryAllRootCategory();
+        List<Category> categoryList=new ArrayList<>();
+        String catStr=redisOperator.get("cats");
+        if(StringUtils.isBlank(catStr)){//获取redis数据为空时
+            //获取商品分类(一级分类)
+            categoryList= categoryService.queryAllRootCategory();
+            //将数据加入redis
+            redisOperator.set("cats",JsonUtils.objectToJson(categoryList));
+        }else{
+            //redis存在该数据就从该数据中获取
+            categoryList=JsonUtils.jsonToList(catStr,Category.class);
+        }
         return JSONResult.ok(categoryList);
     }
 
@@ -99,8 +114,16 @@ public class IndexController {
         if(rootCatId==null){
             return JSONResult.errorMsg("分类不存在");
         }
-        //通过一级分类id获取子分类
-        List<CategoryVO> list= categoryService.getSubCatList(rootCatId);
+
+        List<CategoryVO> list=new ArrayList<>();
+        String catStr=redisOperator.get("subCat:"+rootCatId);
+        if(StringUtils.isBlank(catStr)){
+            //通过一级分类id获取子分类
+            list= categoryService.getSubCatList(rootCatId);
+            redisOperator.set("subCat:"+rootCatId,JsonUtils.objectToJson(list));
+        }else{
+            list=JsonUtils.jsonToList(catStr,CategoryVO.class);
+        }
         return JSONResult.ok(list);
     }
 
