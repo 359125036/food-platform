@@ -107,7 +107,21 @@ public class ShopcartController extends BaseController{
         if(StringUtils.isBlank(userId)&&StringUtils.isBlank(itemSpecId))
             return JSONResult.errorMsg("参数不能为空");
 
-        //TODO 用户在页面删除购物车中的商品信息，如果用户已登录还需删除后端购物车中的信息
+        //用户在页面删除购物车中的商品信息，如果用户已登录还需删除redis购物车中的信息
+        String shopCartJson=redisOperator.get(FOODIE_SHOPCART+":"+userId);
+        //redis有购物车数据
+        if(StringUtils.isNotBlank(shopCartJson)){
+            List<ShopcartBO> list=JsonUtils.jsonToList(shopCartJson,ShopcartBO.class);
+            for (ShopcartBO shopcartBO : list) {
+                if(shopcartBO.getSpecId().equals(itemSpecId)){
+                    //当redis中存在该规格的商品时，将其删除并跳出循环
+                    list.remove(shopcartBO);
+                    break;
+                }
+            }
+            //更新redis
+            redisOperator.set(FOODIE_SHOPCART+":"+userId,JsonUtils.objectToJson(list));
+        }
         return JSONResult.ok();
     }
 }
