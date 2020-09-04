@@ -2,13 +2,18 @@ package com.zx.controller;
 
 import com.zx.pojo.bo.ShopcartBO;
 import com.zx.utils.JSONResult;
+import com.zx.utils.JsonUtils;
+import com.zx.utils.RedisOperator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ClassName: ShopcartController
@@ -20,7 +25,10 @@ import javax.servlet.http.HttpServletResponse;
 @Api(value = "购物车接口",tags = {"购物车接口相关的api"})
 @RestController
 @RequestMapping("shopcart")
-public class ShopcartController {
+public class ShopcartController extends BaseController{
+
+    @Autowired
+    private RedisOperator redisOperator;
 
     /**
      * @Method add
@@ -44,7 +52,36 @@ public class ShopcartController {
         if(StringUtils.isBlank(userId))
             return JSONResult.errorMsg(null);
         System.out.println(shopcartBO);
-        //TODO 前端用户在登录的情况下，添加商品到购物车，会同时在后端同步购物车到redis缓存
+        //前端用户在登录的情况下，添加商品到购物车，会同时在后端同步购物车到redis缓存
+        //判断购物车中是否已包含存在的商品，如果存在则数量累加
+        String shopCartLJson=redisOperator.get(FOODIE_SHOPCART+":"+userId);
+        List<ShopcartBO> list=new ArrayList<>();
+        if(StringUtils.isNotBlank(shopCartLJson)){
+            //redis中存在购物车
+            list= JsonUtils.jsonToList(shopCartLJson,ShopcartBO.class);
+            //判断购物车中是否已存在数量，如果有counts累加
+            boolean isHaving=false;
+            for (ShopcartBO bo : list) {
+                //获取redis中商品规格id
+                String specId=bo.getSpecId();
+                //比对缓存与当前规格
+                if(specId.equals(shopcartBO.getSpecId())){
+                    //添加数量
+                    bo.setBuyCounts(bo.getBuyCounts()+shopcartBO.getBuyCounts());
+                    isHaving=true;
+                }
+            }
+            //当redis缓存中不存在时添加
+            if(!isHaving){
+                list.add(shopcartBO);
+            }
+        }else{
+            //不存在直接加入redis
+            list.add(shopcartBO);
+        }
+        //覆盖现有redis数据
+        redisOperator.set(FOODIE_SHOPCART+":"+userId,JsonUtils.objectToJson(list));
+
         return JSONResult.ok();
     }
 
