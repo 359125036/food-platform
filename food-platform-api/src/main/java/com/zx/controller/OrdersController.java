@@ -3,13 +3,18 @@ package com.zx.controller;
 import com.zx.enums.OrderStatusEnum;
 import com.zx.enums.PayMethodEnum;
 import com.zx.pojo.OrderStatus;
+import com.zx.pojo.bo.ShopcartBO;
 import com.zx.pojo.bo.SubmitOrderBO;
 import com.zx.pojo.vo.MerchantOrdersVO;
 import com.zx.pojo.vo.OrderVO;
 import com.zx.service.OrderService;
+import com.zx.utils.CookieUtils;
 import com.zx.utils.JSONResult;
+import com.zx.utils.JsonUtils;
+import com.zx.utils.RedisOperator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @ClassName: OrdersController
@@ -42,6 +48,9 @@ public class OrdersController extends BaseController {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private RedisOperator redisOperator;
 
     /**
      * @Method create
@@ -65,13 +74,21 @@ public class OrdersController extends BaseController {
             && submitOrderBO.getPayMethod() != PayMethodEnum.ALIPAY.type ) {
             return JSONResult.errorMsg("支付方式不支持！");
         }
+        String shopcart=redisOperator.get(FOODIE_SHOPCART+":"+submitOrderBO.getUserId());
+        if(StringUtils.isBlank(shopcart)){
+            return JSONResult.errorMsg("购物参数不正确");
+        }
 
+        List<ShopcartBO> shopcartBOList=JsonUtils.jsonToList(shopcart, ShopcartBO.class);
 //        System.out.println(submitOrderBO.toString());
 
         // 1. 创建订单
-        OrderVO orderVO = orderService.createOrder(submitOrderBO);
+        OrderVO orderVO = orderService.createOrder(shopcartBOList,submitOrderBO);
         String orderId = orderVO.getOrderId();
 
+        //清理覆盖现有的redis汇总的购物数据
+        shopcartBOList.removeAll(orderVO.getRemoveShopcartBOList());
+        redisOperator.set(FOODIE_SHOPCART+":"+submitOrderBO.getUserId(),JsonUtils.objectToJson(shopcartBOList));
         // 2. 创建订单以后，移除购物车中已结算（已提交）的商品
         /**
          * 1001
@@ -79,8 +96,8 @@ public class OrdersController extends BaseController {
          * 3003 -> 用户购买
          * 4004
          */
-        // TODO 整合redis之后，完善购物车中的已结算商品清除，并且同步到前端的cookie
-//        CookieUtils.setCookie(request, response, FOODIE_SHOPCART, "", true);
+        // 整合redis之后，完善购物车中的已结算商品清除，并且同步到前端的cookie
+        CookieUtils.setCookie(request, response, FOODIE_SHOPCART, JsonUtils.objectToJson(shopcartBOList), true);
 
         // 3. 向支付中心发送当前订单，用于保存支付中心的订单数据
         MerchantOrdersVO merchantOrdersVO = orderVO.getMerchantOrdersVO();
@@ -102,10 +119,10 @@ public class OrdersController extends BaseController {
                                             entity,
                         JSONResult.class);
         JSONResult paymentResult = responseEntity.getBody();
-        if (paymentResult.getStatus() != 200) {
-            logger.error("发送错误：{}", paymentResult.getMsg());
-            return JSONResult.errorMsg("支付中心订单创建失败，请联系管理员！");
-        }
+//        if (paymentResult.getStatus() != 200) {
+//            logger.error("发送错误：{}", paymentResult.getMsg());
+//            return JSONResult.errorMsg("支付中心订单创建失败，请联系管理员！");
+//        }
 
         return JSONResult.ok(orderId);
     }

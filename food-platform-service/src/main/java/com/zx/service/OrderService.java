@@ -1,8 +1,11 @@
 package com.zx.service;
 
 import com.zx.pojo.OrderStatus;
+import com.zx.pojo.bo.ShopcartBO;
 import com.zx.pojo.bo.SubmitOrderBO;
 import com.zx.pojo.vo.OrderVO;
+
+import java.util.List;
 
 /**
  * @ClassName: OrderService
@@ -17,7 +20,7 @@ public interface OrderService {
      * 用于创建订单相关信息
      * @param submitOrderBO
      */
-    public OrderVO createOrder(SubmitOrderBO submitOrderBO);
+    public OrderVO createOrder(List<ShopcartBO> shopcartBOList, SubmitOrderBO submitOrderBO);
 
     /**
      * 修改订单状态

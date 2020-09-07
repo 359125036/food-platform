@@ -6,6 +6,7 @@ import com.zx.mapper.OrderItemsMapper;
 import com.zx.mapper.OrderStatusMapper;
 import com.zx.mapper.OrdersMapper;
 import com.zx.pojo.*;
+import com.zx.pojo.bo.ShopcartBO;
 import com.zx.pojo.bo.SubmitOrderBO;
 import com.zx.pojo.vo.MerchantOrdersVO;
 import com.zx.pojo.vo.OrderVO;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public OrderVO createOrder(SubmitOrderBO submitOrderBO) {
+    public OrderVO createOrder(List<ShopcartBO> shopcartBOList, SubmitOrderBO submitOrderBO) {
 
         String userId = submitOrderBO.getUserId();
         String addressId = submitOrderBO.getAddressId();
@@ -104,11 +106,15 @@ public class OrderServiceImpl implements OrderService {
         String itemSpecIdArr[] = itemSpecIds.split(",");
         Integer totalAmount = 0;    // 商品原价累计
         Integer realPayAmount = 0;  // 优惠后的实际支付价格累计
+        //清理redis中数据
+        List<ShopcartBO> removeShopcartBoList=new ArrayList<>();
         for (String itemSpecId : itemSpecIdArr) {
 
-            // TODO 整合redis后，商品购买的数量重新从redis的购物车中获取
-            int buyCounts = 1;
+            ShopcartBO cartItem=getBuyCountsFromShopcart(shopcartBOList,itemSpecId);
+            //整合redis后，商品购买的数量重新从redis的购物车中获取
+            int buyCounts = cartItem.getBuyCounts();
 
+            removeShopcartBoList.add(cartItem);
             // 2.1 根据规格id，查询规格的具体信息，主要获取价格
             ItemsSpec itemSpec = itemService.queryItemSpecById(itemSpecId);
             totalAmount += itemSpec.getPriceNormal() * buyCounts;
@@ -159,7 +165,7 @@ public class OrderServiceImpl implements OrderService {
         OrderVO orderVO = new OrderVO();
         orderVO.setOrderId(orderId);
         orderVO.setMerchantOrdersVO(merchantOrdersVO);
-
+        orderVO.setRemoveShopcartBOList(removeShopcartBoList);
         return orderVO;
     }
     /**
@@ -227,5 +233,25 @@ public class OrderServiceImpl implements OrderService {
         close.setOrderStatus(OrderStatusEnum.CLOSE.type);
         close.setCloseTime(new Date());
         orderStatusMapper.updateByPrimaryKeySelective(close);
+    }
+
+    /**
+     * @Method getBuyCountsFromShopcart
+     * @Author zhengxin
+     * @Description 从redis中获取商品
+     * @param shopcartBOList  购物车商品集合
+     * @param specId 规格id
+     * @Return com.zx.pojo.bo.ShopcartBO
+     * @Exception
+     * @Date 2020/9/5 11:03
+     */
+    private ShopcartBO getBuyCountsFromShopcart(List<ShopcartBO> shopcartBOList,String specId){
+
+        for (ShopcartBO shopcartBO : shopcartBOList) {
+            if(shopcartBO.getSpecId().equals(specId)){
+                return shopcartBO;
+            }
+        }
+        return null;
     }
 }
