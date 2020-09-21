@@ -215,13 +215,13 @@ public class CenterUserController extends BaseController {
         return map;
     }
 
-    private Users setNullProperty(Users userResult) {
-        userResult.setPassword(null);
-        userResult.setMobile(null);
-        userResult.setEmail(null);
-        userResult.setCreatedTime(null);
-        userResult.setUpdatedTime(null);
-        userResult.setBirthday(null);
-        return userResult;
-    }
+//    private Users setNullProperty(Users userResult) {
+//        userResult.setPassword(null);
+//        userResult.setMobile(null);
+//        userResult.setEmail(null);
+//        userResult.setCreatedTime(null);
+//        userResult.setUpdatedTime(null);
+//        userResult.setBirthday(null);
+//        return userResult;
+//    }
 }
