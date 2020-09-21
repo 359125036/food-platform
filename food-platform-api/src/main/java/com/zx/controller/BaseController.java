@@ -1,10 +1,16 @@
 package com.zx.controller;
 
 import com.zx.pojo.Orders;
+import com.zx.pojo.Users;
+import com.zx.pojo.vo.UserVO;
 import com.zx.service.center.MyOrdersService;
 import com.zx.utils.JSONResult;
+import com.zx.utils.RedisOperator;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
+import java.util.UUID;
 
 /**
  * @ClassName: BaseController
@@ -15,6 +21,13 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class BaseController {
+
+    @Autowired
+    private RedisOperator redisOperator;
+
+    //用户redis使用的token
+    public static final String REDIS_USER_TOKEN = "redis_user_token";
+
 
     public static final String FOODIE_SHOPCART = "shopcart";
 
@@ -56,4 +69,26 @@ public class BaseController {
         }
         return JSONResult.ok(order);
     }
+
+
+    /**
+     * @Method conventUserVO
+     * @Author zhengxin
+     * @Description 实现用户的redis回话
+     * @param users
+     * @Return com.zx.pojo.vo.UserVO
+     * @Exception
+     * @Date 2020/9/21 9:55
+     */
+    public UserVO conventUserVO(Users users){
+
+        //实现用户的redis回话
+        String uniqueToken= UUID.randomUUID().toString().trim();
+        redisOperator.set(REDIS_USER_TOKEN+":"+users.getId(), uniqueToken);
+        UserVO userVO=new UserVO();
+        BeanUtils.copyProperties(users, userVO);
+        userVO.setUserUniqueToken(uniqueToken);
+        return userVO;
+    }
+
 }

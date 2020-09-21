@@ -1,7 +1,9 @@
 package com.zx.controller.center;
 
+import com.zx.controller.BaseController;
 import com.zx.pojo.Users;
 import com.zx.pojo.bo.center.CenterUserBO;
+import com.zx.pojo.vo.UserVO;
 import com.zx.resources.FileUpload;
 import com.zx.service.center.CenterUserService;
 import com.zx.utils.CookieUtils;
@@ -40,7 +42,7 @@ import java.util.Map;
 @Api(value = "用户信息接口", tags = {"用户信息相关接口"})
 @RestController
 @RequestMapping("userInfo")
-public class CenterUserController {
+public class CenterUserController extends BaseController {
 
     @Autowired
     private CenterUserService centerUserService;
@@ -144,11 +146,14 @@ public class CenterUserController {
         // 更新用户头像到数据库
         Users userResult = centerUserService.updateUserFace(userId, finalUserFaceUrl);
 
-        userResult = setNullProperty(userResult);
-        CookieUtils.setCookie(request, response, "user",
-                JsonUtils.objectToJson(userResult), true);
+        // 增加令牌token，会整合进redis，分布式会话
+        UserVO userVO=conventUserVO(userResult);
 
-        // TODO 后续要改，增加令牌token，会整合进redis，分布式会话
+//        userResult = setNullProperty(userResult);
+        CookieUtils.setCookie(request, response, "user",
+                JsonUtils.objectToJson(userVO), true);
+
+
 
         return JSONResult.ok();
     }
@@ -185,11 +190,13 @@ public class CenterUserController {
 
         Users userResult = centerUserService.updateUserInfo(userId, centerUserBO);
 
-        userResult = setNullProperty(userResult);
-        CookieUtils.setCookie(request, response, "user",
-                JsonUtils.objectToJson(userResult), true);
+        // 增加令牌token，会整合进redis，分布式会话
+        UserVO userVO=conventUserVO(userResult);
 
-        // TODO 后续要改，增加令牌token，会整合进redis，分布式会话
+//        userResult = setNullProperty(userResult);
+
+        CookieUtils.setCookie(request, response, "user",
+                JsonUtils.objectToJson(userVO), true);
 
         return JSONResult.ok();
     }
