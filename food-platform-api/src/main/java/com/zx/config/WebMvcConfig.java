@@ -1,9 +1,11 @@
 package com.zx.config;
 
+import com.zx.controller.interceptor.UserTokenInterceptor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -35,5 +37,36 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder){
         return builder.build();
+    }
+
+    /**
+     * @Method userTokenInterceptor
+     * @Author zhengxin
+     * @Description 用户分布式会话拦截器添加到spring管理器中
+     * @param
+     * @Return com.zx.controller.interceptor.UserTokenInterceptor
+     * @Exception
+     * @Date 2020/9/21 12:08
+     */
+    @Bean
+    public UserTokenInterceptor userTokenInterceptor(){
+        return new UserTokenInterceptor();
+    }
+
+    /**
+     * @Method addInterceptors
+     * @Author zhengxin
+     * @Description 注册拦截器
+     * @param registry
+     * @Return void
+     * @Exception
+     * @Date 2020/9/21 12:10
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+
+        registry.addInterceptor(userTokenInterceptor())
+                .addPathPatterns("/hello");
+        WebMvcConfigurer.super.addInterceptors(registry);
     }
 }
